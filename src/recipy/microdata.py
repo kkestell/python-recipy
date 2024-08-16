@@ -64,8 +64,8 @@ def recipe_from_json(json_data: Union[str, Dict]) -> Optional[Recipe]:
     return Recipe(
         title=recipe_title,
         description=_get_description(recipe),
-        image_url=_get_image_url(recipe),
-        ingredient_groups=[IngredientGroup(name=None, ingredients=recipe_ingredients)],
+        image_urls=_get_image_urls(recipe),
+        ingredient_groups=[IngredientGroup(title=None, ingredients=recipe_ingredients)],
         instruction_groups=recipe_instruction_groups,
         reviews=_get_reviews(recipe),
         rating=Rating(value=_get_rating_value(recipe), count=_get_rating_count(recipe)),
@@ -76,6 +76,55 @@ def recipe_from_json(json_data: Union[str, Dict]) -> Optional[Recipe]:
             recipe_yield=_get_recipe_yield(recipe)
         )
     )
+
+
+def recipe_to_json(recipe: Recipe) -> str:
+    recipe_json_ld = {
+        "@context": "https://schema.org/",
+        "@type": "Recipe",
+        "name": recipe.title,
+        "description": recipe.description,
+        "image": recipe.image_urls,
+        "recipeIngredient": [
+            ingredient
+            for group in recipe.ingredient_groups
+            for ingredient in group.ingredients
+        ],
+        "recipeInstructions": [
+            {
+                "@type": "HowToStep",
+                "text": instruction
+            }
+            for group in recipe.instruction_groups
+            for instruction in group.instructions
+        ],
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": recipe.rating.value if recipe.rating else 0,
+            "ratingCount": recipe.rating.count if recipe.rating else 0
+        } if recipe.rating else None,
+        "prepTime": f"PT{recipe.meta.prep_time_minutes}M" if recipe.meta and recipe.meta.prep_time_minutes else None,
+        "cookTime": f"PT{recipe.meta.cook_time_minutes}M" if recipe.meta and recipe.meta.cook_time_minutes else None,
+        "totalTime": f"PT{recipe.meta.total_time_minutes}M" if recipe.meta and recipe.meta.total_time_minutes else None,
+        "recipeYield": recipe.meta.recipe_yield if recipe.meta and recipe.meta.recipe_yield else None,
+        "review": [
+            {
+                "@type": "Review",
+                "author": review.author,
+                "reviewBody": review.body,
+                "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": review.rating
+                } if review.rating else None
+            }
+            for review in recipe.reviews
+        ]
+    }
+
+    # Remove keys with None values
+    recipe_json_ld = {k: v for k, v in recipe_json_ld.items() if v is not None}
+
+    return json.dumps(recipe_json_ld, indent=2)
 
 
 def _extract_recipe_text(soup: BeautifulSoup) -> Optional[str]:
@@ -137,19 +186,19 @@ def _get_description(recipe: dict) -> Optional[str]:
     return val
 
 
-def _get_image_url(recipe: dict) -> Optional[str]:
+def _get_image_urls(recipe: dict) -> List[str]:
     image = recipe.get("image")
     if not image:
-        return None
+        return []
     if isinstance(image, str):
-        return image
+        return [image]
     if isinstance(image, dict):
-        return image.get("url")
+        return [image.get("url")]
     if isinstance(image, list):
         if all(isinstance(i, str) for i in image):
-            return image[0]
+            return image
         if all(isinstance(i, dict) for i in image):
-            return image[0].get("url")
+            return [i.get("url") for i in image]
     raise ValueError(f"Unexpected image type: {image}")
 
 
@@ -172,12 +221,12 @@ def _get_instruction_groups(recipe: dict) -> Optional[List[InstructionGroup]]:
     if isinstance(instructions_element, list):
         if all(isinstance(i, str) for i in instructions_element):
             instructions = [utils.clean_text(i) for i in instructions_element]
-            instruction_groups.append(InstructionGroup(name=None, instructions=instructions))
+            instruction_groups.append(InstructionGroup(title=None, instructions=instructions))
         elif all(isinstance(i, dict) for i in instructions_element):
             if all(i.get("@type") == "HowToStep" for i in instructions_element):
                 instructions = [utils.clean_text(i.get("text") or i.get("name")) for i in instructions_element if
                                 i.get("text") or i.get("name")]
-                instruction_groups.append(InstructionGroup(name=None, instructions=instructions))
+                instruction_groups.append(InstructionGroup(title=None, instructions=instructions))
             elif all(i.get("@type") == "HowToSection" for i in instructions_element):
                 for group in instructions_element:
                     group_name = group.get("name")
@@ -185,7 +234,7 @@ def _get_instruction_groups(recipe: dict) -> Optional[List[InstructionGroup]]:
                     if item_list_element:
                         group_instructions = [utils.clean_text(instruction.get("text")) for instruction in
                                               item_list_element if instruction.get("text")]
-                        instruction_groups.append(InstructionGroup(name=group_name, instructions=group_instructions))
+                        instruction_groups.append(InstructionGroup(title=group_name, instructions=group_instructions))
 
     return instruction_groups if instruction_groups else None
 

@@ -2,11 +2,11 @@ from typing import Optional, List
 from pydantic import BaseModel, Field
 
 class IngredientGroup(BaseModel):
-    name: Optional[str]
+    title: Optional[str]
     ingredients: List[str]
 
 class InstructionGroup(BaseModel):
-    name: Optional[str]
+    title: Optional[str]
     instructions: List[str]
 
 class Review(BaseModel):
@@ -31,6 +31,6 @@ class Recipe(BaseModel):
     instruction_groups: List[InstructionGroup] = Field(default_factory=list)
     notes: Optional[str] = None
     reviews: List[Review] = Field(default_factory=list)
-    image_url: Optional[str] = None
+    image_urls: List[str] = Field(default_factory=list)
     rating: Optional[Rating] = None
     meta: Optional[Meta] = None

@@ -151,16 +151,16 @@ def recipe_to_markdown(recipe: Recipe):
 
     md += "## Ingredients\n\n"
     for ingredient_group in recipe.ingredient_groups:
-        if ingredient_group.name:
-            md += f"### {ingredient_group.name}\n\n"
+        if ingredient_group.title:
+            md += f"### {ingredient_group.title}\n\n"
         for ingredient in ingredient_group.ingredients:
             md += f"* {ingredient}\n"
         md += "\n"
 
     md += "## Instructions\n\n"
     for instruction_group in recipe.instruction_groups:
-        if instruction_group.name:
-            md += f"### {instruction_group.name}\n\n"
+        if instruction_group.title:
+            md += f"### {instruction_group.title}\n\n"
         for i, instruction in enumerate(instruction_group.instructions, 1):
             md += f"{i}. {instruction}\n"
         md += "\n"

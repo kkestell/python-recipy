@@ -65,8 +65,8 @@ def recipe_to_latex(recipe: Recipe) -> str:
     latex.append("\\raggedright")
 
     for ingredient_group in ingredient_groups:
-        if ingredient_group.name:
-            latex.append(f"\\subsection*{{{_escape_latex(ingredient_group.name)}}}")
+        if ingredient_group.title:
+            latex.append(f"\\subsection*{{{_escape_latex(ingredient_group.title)}}}")
         latex.append("\\begin{itemize}[leftmargin=*]")
         for ingredient in ingredient_group.ingredients:
             latex.append(f"\\item {_escape_latex(ingredient)}")
@@ -76,8 +76,8 @@ def recipe_to_latex(recipe: Recipe) -> str:
     latex.append("\\section*{Instructions}")
 
     for instruction_group in instruction_groups:
-        if instruction_group.name:
-            latex.append(f"\\subsection*{{{_escape_latex(instruction_group.name)}}}")
+        if instruction_group.title:
+            latex.append(f"\\subsection*{{{_escape_latex(instruction_group.title)}}}")
         latex.append("\\begin{enumerate}[leftmargin=*]")
         for instruction in instruction_group.instructions:
             latex.append(f"\\item {_escape_latex(instruction)}")

@@ -1,0 +1,11 @@
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.venv
+.pdm-python
+.idea/
+.pytest_cache/
+.pdm-build/

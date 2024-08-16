@@ -1,6 +1,7 @@
 # Recipy
 
-Recipy extracts recipes from web pages using JSON-LD and converts them into Python objects. It also supports generating Markdown, LaTeX, and PDFs.
+Recipy extracts recipes from web pages using JSON-LD and converts them into Python objects. It also supports generating
+Markdown, LaTeX, and PDFs.
 
 ```python
 from recipy.microdata import recipe_from_url
@@ -28,7 +29,7 @@ sudo apt install texlive
 ```
 
 #### macOS
-    
+
 ```bash
 brew install texlive
 ```
@@ -131,12 +132,17 @@ recipe = Recipe(
     title="Tomato Basil Salad",
     description="A simple and fresh tomato basil salad.",
     ingredient_groups=[
-        IngredientGroup(name="For the Salad", ingredients=["2 ripe tomatoes, sliced", "1/4 cup fresh basil leaves, torn"]),
-        IngredientGroup(name="For the Dressing", ingredients=["2 tablespoons olive oil", "1 tablespoon balsamic vinegar"])
+        IngredientGroup(name="For the Salad",
+                        ingredients=["2 ripe tomatoes, sliced", "1/4 cup fresh basil leaves, torn"]),
+        IngredientGroup(name="For the Dressing",
+                        ingredients=["2 tablespoons olive oil", "1 tablespoon balsamic vinegar"])
     ],
     instruction_groups=[
-        InstructionGroup(name="Making the Salad", instructions=["Arrange the tomato slices on a plate.", "Scatter the torn basil leaves over the tomatoes."]),
-        InstructionGroup(name="Preparing the Dressing", instructions=["In a small bowl, whisk together the olive oil and balsamic vinegar.", "Drizzle the dressing over the tomatoes and basil before serving."])
+        InstructionGroup(name="Making the Salad", instructions=["Arrange the tomato slices on a plate.",
+                                                                "Scatter the torn basil leaves over the tomatoes."]),
+        InstructionGroup(name="Preparing the Dressing",
+                         instructions=["In a small bowl, whisk together the olive oil and balsamic vinegar.",
+                                       "Drizzle the dressing over the tomatoes and basil before serving."])
     ]
 )
 
@@ -155,12 +161,17 @@ recipe = Recipe(
     title="Tomato Basil Salad",
     description="A simple and fresh tomato basil salad.",
     ingredient_groups=[
-        IngredientGroup(name="For the Salad", ingredients=["2 ripe tomatoes, sliced", "1/4 cup fresh basil leaves, torn"]),
-        InstructionGroup(name="For the Dressing", ingredients=["2 tablespoons olive oil", "1 tablespoon balsamic vinegar"])
+        IngredientGroup(name="For the Salad",
+                        ingredients=["2 ripe tomatoes, sliced", "1/4 cup fresh basil leaves, torn"]),
+        InstructionGroup(name="For the Dressing",
+                         ingredients=["2 tablespoons olive oil", "1 tablespoon balsamic vinegar"])
     ],
     instruction_groups=[
-        InstructionGroup(name="Making the Salad", instructions=["Arrange the tomato slices on a plate.", "Scatter the torn basil leaves over the tomatoes."]),
-        InstructionGroup(name="Preparing the Dressing", instructions=["In a small bowl, whisk together the olive oil and balsamic vinegar.", "Drizzle the dressing over the tomatoes and basil before serving."])
+        InstructionGroup(name="Making the Salad", instructions=["Arrange the tomato slices on a plate.",
+                                                                "Scatter the torn basil leaves over the tomatoes."]),
+        InstructionGroup(name="Preparing the Dressing",
+                         instructions=["In a small bowl, whisk together the olive oil and balsamic vinegar.",
+                                       "Drizzle the dressing over the tomatoes and basil before serving."])
     ]
 )
 
@@ -173,41 +184,41 @@ print(latex_content)
 ### JSON-LD
 
 | Feature              | Input | Output |
-|----------------------|-------|--------|
-| Title                | ✅     | ❌      |
-| Description          | ✅     | ❌      |
-| Ingredient Groups    | ❌     | ❌      |
-| Instruction Groups   | ✅     | ❌      |
-| Rating               | ✅     | ❌      |
-| Reviews              | ✅     | ❌      |
-| Prep/Cook Time/Yield | ✅     | ❌      |
-| Notes                | ❌     | ❌      |
+|----------------------|:-----:|:------:|
+| Title                |   ✅   |   ❌    |
+| Description          |   ✅   |   ❌    |
+| Ingredient Groups    |   ❌   |   ❌    |
+| Instruction Groups   |   ✅   |   ❌    |
+| Rating               |   ✅   |   ❌    |
+| Reviews              |   ✅   |   ❌    |
+| Prep/Cook Time/Yield |   ✅   |   ❌    |
+| Notes                |   ❌   |   ❌    |
 
 ### Markdown
 
 | Feature              | Input | Output |
-|----------------------|-------|--------|
-| Title                | ✅     | ✅      |
-| Description          | ✅     | ✅      |
-| Ingredient Groups    | ✅     | ✅      |
-| Instruction Groups   | ✅     | ✅      |
-| Rating               | ❌     | ❌      |
-| Reviews              | ❌     | ❌      |
-| Prep/Cook Time/Yield | ❌     | ❌      |
-| Notes                | ✅     | ✅      |
+|----------------------|:-----:|:------:|
+| Title                |   ✅   |   ✅    |
+| Description          |   ✅   |   ✅    |
+| Ingredient Groups    |   ✅   |   ✅    |
+| Instruction Groups   |   ✅   |   ✅    |
+| Rating               |   ❌   |   ❌    |
+| Reviews              |   ❌   |   ❌    |
+| Prep/Cook Time/Yield |   ❌   |   ❌    |
+| Notes                |   ✅   |   ✅    |
 
 ### LaTeX / PDF
 
 | Feature              | Input | Output |
-|----------------------|-------|--------|
-| Title                | ❌     | ✅      |
-| Description          | ❌     | ✅      |
-| Ingredient Groups    | ❌     | ✅      |
-| Instruction Groups   | ❌     | ✅      |
-| Rating               | ❌     | ❌      |
-| Reviews              | ❌     | ❌      |
-| Prep/Cook Time/Yield | ❌     | ❌      |
-| Notes                | ❌     | ✅      |
+|----------------------|:-----:|:------:|
+| Title                |   ❌   |   ✅    |
+| Description          |   ❌   |   ✅    |
+| Ingredient Groups    |   ❌   |   ✅    |
+| Instruction Groups   |   ❌   |   ✅    |
+| Rating               |   ❌   |   ❌    |
+| Reviews              |   ❌   |   ❌    |
+| Prep/Cook Time/Yield |   ❌   |   ❌    |
+| Notes                |   ❌   |   ✅    |
 
 ## License
 

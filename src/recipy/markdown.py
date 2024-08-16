@@ -99,11 +99,11 @@ class RecipeParser(Treeprocessor):
                 if len(root) <= current_index or root[current_index].tag != 'ul':
                     return None
                 ingredients = [utils.normalize_fractions(li.text) for li in root[current_index] if li.tag == 'li']
-                groups.append(IngredientGroup(name=name, ingredients=ingredients))
+                groups.append(IngredientGroup(title=name, ingredients=ingredients))
                 current_index += 1
             elif root[current_index].tag == 'ul':
                 ingredients = [utils.normalize_fractions(li.text) for li in root[current_index] if li.tag == 'li']
-                groups.append(IngredientGroup(name=None, ingredients=ingredients))
+                groups.append(IngredientGroup(title=None, ingredients=ingredients))
                 current_index += 1
             else:
                 current_index += 1
@@ -121,11 +121,11 @@ class RecipeParser(Treeprocessor):
                 if len(root) <= current_index or root[current_index].tag != 'ol':
                     return None
                 instructions = [utils.normalize_fractions(li.text) for li in root[current_index] if li.tag == 'li']
-                groups.append(InstructionGroup(name=name, instructions=instructions))
+                groups.append(InstructionGroup(title=name, instructions=instructions))
                 current_index += 1
             elif root[current_index].tag == 'ol':
                 instructions = [utils.normalize_fractions(li.text) for li in root[current_index] if li.tag == 'li']
-                groups.append(InstructionGroup(name=None, instructions=instructions))
+                groups.append(InstructionGroup(title=None, instructions=instructions))
                 current_index += 1
             else:
                 break

@@ -27,8 +27,8 @@ class Rating(BaseModel):
 class Recipe(BaseModel):
     title: str
     description: Optional[str]
-    ingredient_groups: List[IngredientGroup] = Field(default_factory=list)
-    instruction_groups: List[InstructionGroup] = Field(default_factory=list)
+    ingredient_groups: Optional[List[IngredientGroup]] = Field(default_factory=list)
+    instruction_groups: Optional[List[InstructionGroup]] = Field(default_factory=list)
     notes: Optional[str] = None
     reviews: List[Review] = Field(default_factory=list)
     image_urls: List[str] = Field(default_factory=list)

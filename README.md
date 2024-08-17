@@ -4,7 +4,7 @@ Recipy extracts recipes from web pages using JSON-LD and converts them into Pyth
 Markdown, LaTeX, and PDFs.
 
 ```python
-from recipy.json import recipe_from_url
+from recipy.json_ld import recipe_from_url
 
 recipe = recipe_from_url("https://www.allrecipes.com/recipe/14231/guacamole/")
 
@@ -39,7 +39,7 @@ brew install texlive
 ### Load Recipe from JSON-LD
 
 ```python
-from recipy.json import recipe_from_json
+from recipy.json_ld import recipe_from_json
 
 json_data = '''
 {
@@ -134,8 +134,7 @@ if recipe:
 ### Convert Recipe to JSON
 
 ```python
-from recipy.json import recipe_from_url
-from recipy.json import recipe_to_json
+from recipy.json_ld import recipe_from_url, recipe_to_json
 
 recipe = recipe_from_url("https://www.allrecipes.com/recipe/14231/guacamole/")
 
@@ -147,7 +146,7 @@ if recipe:
 ### Convert Recipe to PDF
 
 ```python
-from recipy.json import recipe_from_url
+from recipy.json_ld import recipe_from_url
 from recipy.pdf import recipe_to_pdf
 
 recipe = recipe_from_url("https://www.allrecipes.com/recipe/14231/guacamole/")
@@ -161,7 +160,7 @@ if recipe:
 ### Convert Recipe to LaTeX
 
 ```python
-from recipy.json import recipe_from_url
+from recipy.json_ld import recipe_from_url
 from recipy.latex import recipe_to_latex
 
 recipe = recipe_from_url("https://www.allrecipes.com/recipe/14231/guacamole/")

@@ -4,14 +4,12 @@ Recipy extracts recipes from web pages using JSON-LD and converts them into Pyth
 Markdown, LaTeX, and PDFs.
 
 ```python
-from recipy.microdata import recipe_from_url
+from recipy.json import recipe_from_url
 
-url = "https://www.allrecipes.com/recipe/14231/guacamole/"
-
-recipe = recipe_from_url(url)
+recipe = recipe_from_url("https://www.allrecipes.com/recipe/14231/guacamole/")
 
 if recipe:
-    print(recipe.model_dump())
+    print(recipe.model_dump_json(indent=2))
 ```
 
 ## Installation
@@ -38,14 +36,15 @@ brew install texlive
 
 ## Examples
 
-### Load Recipe from JSON
+### Load Recipe from JSON-LD
 
 ```python
-from recipy.microdata import recipe_from_json
+from recipy.json import recipe_from_json
 
 json_data = '''
 {
     "name": "Tomato Basil Salad",
+    "description": "A simple and fresh tomato basil salad.",
     "recipeIngredient": ["2 ripe tomatoes, sliced", "1/4 cup fresh basil leaves, torn"],
     "recipeInstructions": [
         {
@@ -64,15 +63,21 @@ json_data = '''
                 {"@type": "HowToStep", "text": "Drizzle the dressing over the tomatoes and basil before serving."}
             ]
         }
-    ]
+    ],
+    "comment": "Serve immediately for the best flavor."
 }
 '''
 
 recipe = recipe_from_json(json_data)
 
 if recipe:
-    print(recipe.model_dump())
+    print(recipe.model_dump_json(indent=2))
 ```
+
+See:
+
+* [https://schema.org/Recipe](https://schema.org/Recipe)
+* [https://json-ld.org/](https://json-ld.org/)
 
 ### Parse Recipe from Markdown
 
@@ -116,7 +121,7 @@ Serve immediately for the best flavor.
 recipe = recipe_from_markdown(markdown_content)
 
 if recipe:
-    print(recipe.model_dump())
+    print(recipe.model_dump_json(indent=2))
 ```
 
 #### Markdown Structure
@@ -129,38 +134,23 @@ if recipe:
 ### Convert Recipe to JSON
 
 ```python
-from recipy.microdata import recipe_to_json
-from recipy.models import Recipe, IngredientGroup, InstructionGroup
+from recipy.json import recipe_from_url
+from recipy.json import recipe_to_json
 
-recipe = Recipe(
-    title="Tomato Basil Salad",
-    description="A simple and fresh tomato basil salad.",
-    ingredient_groups=[
-        IngredientGroup(title="For the Salad",
-                        ingredients=["2 ripe tomatoes, sliced", "1/4 cup fresh basil leaves, torn"]),
-        IngredientGroup(title="For the Dressing",
-                        ingredients=["2 tablespoons olive oil", "1 tablespoon balsamic vinegar"])
-    ],
-    instruction_groups=[
-        InstructionGroup(title="Making the Salad", instructions=["Arrange the tomato slices on a plate.",
-                                                                "Scatter the torn basil leaves over the tomatoes."]),
-        InstructionGroup(title="Preparing the Dressing",
-                         instructions=["In a small bowl, whisk together the olive oil and balsamic vinegar.",
-                                       "Drizzle the dressing over the tomatoes and basil before serving."])
-    ]
-)
-json_data = recipe_to_json(recipe)
-print(json_data)
+recipe = recipe_from_url("https://www.allrecipes.com/recipe/14231/guacamole/")
+
+if recipe:
+    json_data = recipe_to_json(recipe)
+    print(json_data)
 ```
 
 ### Convert Recipe to PDF
 
 ```python
-from recipy.microdata import recipe_from_url
+from recipy.json import recipe_from_url
 from recipy.pdf import recipe_to_pdf
 
-url = "https://www.allrecipes.com/recipe/14231/guacamole/"
-recipe = recipe_from_url(url)
+recipe = recipe_from_url("https://www.allrecipes.com/recipe/14231/guacamole/")
 
 if recipe:
     pdf_content = recipe_to_pdf(recipe)
@@ -171,11 +161,10 @@ if recipe:
 ### Convert Recipe to LaTeX
 
 ```python
-from recipy.microdata import recipe_from_url
+from recipy.json import recipe_from_url
 from recipy.latex import recipe_to_latex
 
-url = "https://www.allrecipes.com/recipe/14231/guacamole/"
-recipe = recipe_from_url(url)
+recipe = recipe_from_url("https://www.allrecipes.com/recipe/14231/guacamole/")
 
 if recipe:
     latex_content = recipe_to_latex(recipe)
@@ -249,7 +238,7 @@ recipe = Recipe(
     )
 )
 
-print(recipe.model_dump())
+print(recipe.model_dump_json(indent=2))
 ```
 
 ## Supported Features by Format
@@ -260,13 +249,13 @@ print(recipe.model_dump())
             <th></th>
             <th colspan="2">JSON-LD</th>
             <th colspan="2">Markdown</th>
-            <th>LaTeX</th> <!-- latex output -->
+            <th>LaTeX</th>
         </tr>
         <tr>
             <th>Feature</th>
-            <th>Input</th> <!-- json input -->
+            <th>Input</th>  <!-- json input -->
             <th>Output</th> <!-- json output -->
-            <th>Input</th> <!-- markdown input -->
+            <th>Input</th>  <!-- markdown input -->
             <th>Output</th> <!-- markdown output -->
             <th>Output</th> <!-- latex output -->
         </tr>
@@ -354,7 +343,7 @@ print(recipe.model_dump())
         </tr>
         <tr>
             <td>Notes</td>
-            <td>❌</td> <!-- json input -->
+            <td>✅</td> <!-- json input -->
             <td>✅</td> <!-- json output -->
             <td>✅</td> <!-- markdown input -->
             <td>✅</td> <!-- markdown output -->

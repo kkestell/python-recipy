@@ -2,6 +2,15 @@ from .models import Recipe
 
 
 def recipe_to_latex(recipe: Recipe) -> str:
+    """
+    Converts a `Recipe` object into a LaTeX formatted string for generating a PDF.
+
+    Args:
+        recipe (Recipe): The `Recipe` object to be converted.
+
+    Returns:
+        str: A LaTeX formatted string representing the recipe, including the title, description, ingredients, and instructions.
+    """
     title = recipe.title
     description = recipe.description
     ingredient_groups = recipe.ingredient_groups

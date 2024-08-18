@@ -11,6 +11,16 @@ from . import utils
 
 
 def recipe_from_url(url: str) -> Optional[Union[Recipe, str]]:
+    """
+    Fetches a recipe from the given URL, parses the webpage content, and extracts the recipe information.
+
+    Args:
+        url (str): The URL of the webpage containing the recipe.
+
+    Returns:
+        Optional[Union[Recipe, str]]: A `Recipe` object if the recipe is successfully parsed,
+        or a string containing the recipe text if JSON-LD is not available. Returns `None` if neither is found.
+    """
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
         'Referer': 'https://www.google.com/'
@@ -38,6 +48,15 @@ def recipe_from_url(url: str) -> Optional[Union[Recipe, str]]:
 
 
 def recipe_from_json(json_data: Union[str, Dict]) -> Optional[Recipe]:
+    """
+    Parses JSON-LD data and converts it into a `Recipe` object.
+
+    Args:
+        json_data (Union[str, Dict]): The JSON-LD data as a string or a dictionary.
+
+    Returns:
+        Optional[Recipe]: A `Recipe` object if parsing is successful, otherwise `None`.
+    """
     if isinstance(json_data, str):
         try:
             recipe = json.loads(json_data)
@@ -74,6 +93,15 @@ def recipe_from_json(json_data: Union[str, Dict]) -> Optional[Recipe]:
 
 
 def recipe_to_json(recipe: Recipe) -> str:
+    """
+    Converts a `Recipe` object into a JSON-LD formatted string.
+
+    Args:
+        recipe (Recipe): The `Recipe` object to be converted.
+
+    Returns:
+        str: A JSON-LD formatted string representing the recipe.
+    """
     recipe_json_ld = {
         "@context": "https://schema.org/",
         "@type": "Recipe",
@@ -367,7 +395,10 @@ def _get_recipe_yield(recipe: dict) -> Optional[str]:
     recipe_yield_element = recipe.get("recipeYield")
     if isinstance(recipe_yield_element, str):
         return recipe_yield_element
+    if isinstance(recipe_yield_element, list):
+        return recipe_yield_element[0]
     return None
+
 
 def _get_notes(recipe: dict) -> Optional[str]:
     notes = recipe.get("comment")

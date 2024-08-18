@@ -7,7 +7,17 @@ from .latex import recipe_to_latex
 from .models import Recipe
 
 
-def recipe_to_pdf(recipe, source_date_epoch: Optional[str] = "0"):
+def recipe_to_pdf(recipe, source_date_epoch: Optional[str] = "0") -> bytes:
+    """
+    Converts a `Recipe` object to a PDF using LaTeX and returns the PDF content as bytes.
+
+    Args:
+        recipe (Recipe): The `Recipe` object to be converted to PDF.
+        source_date_epoch (Optional[str]): The value for SOURCE_DATE_EPOCH to enforce reproducible builds. Defaults to "0".
+
+    Returns:
+        bytes: The generated PDF content as bytes.
+    """
     latex_content = recipe_to_latex(recipe)
     with tempfile.TemporaryDirectory() as temp_dir:
         temp_file = os.path.join(temp_dir, 'recipe.tex')

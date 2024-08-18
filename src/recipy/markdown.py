@@ -10,6 +10,15 @@ from .models import Recipe, IngredientGroup, InstructionGroup, Review, Meta, Rat
 
 
 def recipe_from_markdown(content: str) -> Optional[Recipe]:
+    """
+    Parses a recipe from a Markdown string and converts it into a `Recipe` object.
+
+    Args:
+        content (str): The Markdown content containing the recipe.
+
+    Returns:
+        Optional[Recipe]: A `Recipe` object if parsing is successful, otherwise `None`.
+    """
     recipe_extension = RecipeExtension()
     md = markdown.Markdown(extensions=[recipe_extension])
 
@@ -23,6 +32,40 @@ def recipe_from_markdown(content: str) -> Optional[Recipe]:
     except ValueError as e:
         print(f"Failed to parse recipe: {str(e)}")
         return None
+
+
+def recipe_to_markdown(recipe: Recipe) -> str:
+    """
+    Converts a `Recipe` object into a Markdown formatted string.
+
+    Args:
+        recipe (Recipe): The `Recipe` object to be converted.
+
+    Returns:
+        str: A Markdown formatted string representing the recipe, including the title, description, ingredients, and instructions.
+    """
+    md = f"# {recipe.title}\n\n"
+
+    if recipe.description:
+        md += f"{recipe.description}\n\n"
+
+    md += "## Ingredients\n\n"
+    for ingredient_group in recipe.ingredient_groups:
+        if ingredient_group.title:
+            md += f"### {ingredient_group.title}\n\n"
+        for ingredient in ingredient_group.ingredients:
+            md += f"* {ingredient}\n"
+        md += "\n"
+
+    md += "## Instructions\n\n"
+    for instruction_group in recipe.instruction_groups:
+        if instruction_group.title:
+            md += f"### {instruction_group.title}\n\n"
+        for i, instruction in enumerate(instruction_group.instructions, 1):
+            md += f"{i}. {instruction}\n"
+        md += "\n"
+
+    return md.strip() + "\n"
 
 
 class RecipeParser(Treeprocessor):
@@ -141,28 +184,3 @@ class RecipeExtension(Extension):
     def extendMarkdown(self, md):
         self.recipe_parser = RecipeParser(md)
         md.treeprocessors.register(self.recipe_parser, 'recipeparser', 15)
-
-
-def recipe_to_markdown(recipe: Recipe):
-    md = f"# {recipe.title}\n\n"
-
-    if recipe.description:
-        md += f"{recipe.description}\n\n"
-
-    md += "## Ingredients\n\n"
-    for ingredient_group in recipe.ingredient_groups:
-        if ingredient_group.title:
-            md += f"### {ingredient_group.title}\n\n"
-        for ingredient in ingredient_group.ingredients:
-            md += f"* {ingredient}\n"
-        md += "\n"
-
-    md += "## Instructions\n\n"
-    for instruction_group in recipe.instruction_groups:
-        if instruction_group.title:
-            md += f"### {instruction_group.title}\n\n"
-        for i, instruction in enumerate(instruction_group.instructions, 1):
-            md += f"{i}. {instruction}\n"
-        md += "\n"
-
-    return md.strip() + "\n"

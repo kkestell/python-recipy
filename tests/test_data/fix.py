@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 # Directory containing the JSON files
-directory = Path('/home/kyle/src/recipy/tests/test_data')
+directory = Path('/tests/test_data')
 
 # Loop through all JSON files in the directory
 for json_file in directory.glob('*.json'):

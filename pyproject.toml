@@ -1,6 +1,6 @@
 [project]
 name = "python-recipy"
-version = "0.1.4"
+version = "0.1.5"
 description = "Extract recipes from web pages that use JSON-LD structured data and output Markdown, LaTeX, and PDF."
 authors = [
     {name = "Kyle Kestell", email = "kyle@kestell.org"},

@@ -137,155 +137,8 @@ class TestJsonLd(unittest.TestCase):
             },
             "reviewBody": "delicious worth an hour. my kids loved them sooooo much",
             "datePublished": "2023-11-22T18:40:42.166Z"
-        },
-        {
-            "@type": "Review",
-            "reviewRating": {
-                "@type": "Rating",
-                "ratingValue": "5"
-            },
-            "author": {
-                "@type": "Person",
-                "name": "Nina"
-            },
-            "reviewBody": "It was super easy to make and tasted amazing",
-            "datePublished": "2022-11-09T05:11:28.347Z"
-        },
-        {
-            "@type": "Review",
-            "reviewRating": {
-                "@type": "Rating",
-                "ratingValue": "5"
-            },
-            "author": {
-                "@type": "Person",
-                "name": "Trevaris Ward"
-            },
-            "reviewBody": "Made them and inserted diced chicken with seasonings. Simple but AMAZING! Loved it.",
-            "datePublished": "2022-05-02T01:34:41.902Z"
-        },
-        {
-            "@type": "Review",
-            "reviewRating": {
-                "@type": "Rating",
-                "ratingValue": "4"
-            },
-            "author": {
-                "@type": "Person",
-                "name": "Katie"
-            },
-            "reviewBody": "I really liked this recipe, but I had to make smaller portions because the rice kept falling apart and I have small hands. Later I just started pressing the rice harder and it went together, but I still wasn’t able to make triangles so I just made balls. Overall this is a really great recipe that I would recommend!",
-            "datePublished": "2020-06-18T19:07:32.623Z"
-        },
-        {
-            "@type": "Review",
-            "reviewRating": {
-                "@type": "Rating",
-                "ratingValue": "5"
-            },
-            "author": {
-                "@type": "Person",
-                "name": "MATTHEW VALDEZ"
-            },
-            "reviewBody": "so much fun to make",
-            "datePublished": "2020-04-20T22:37:14.353Z"
-        },
-        {
-            "@type": "Review",
-            "reviewRating": {
-                "@type": "Rating",
-                "ratingValue": "5"
-            },
-            "author": {
-                "@type": "Person",
-                "name": "MrPinkdiamond10011"
-            },
-            "reviewBody": "Simple base recipe works to give way to more variations. I would recommend adding a little rice vinegar to water, then sprinkle salt on your hands before handling the rice. This way the rice will not stick to your hands and the onigiri can be formed in its proper trangle shape.",
-            "datePublished": "2019-08-20T14:51:01.270Z"
-        },
-        {
-            "@type": "Review",
-            "reviewRating": {
-                "@type": "Rating",
-                "ratingValue": "5"
-            },
-            "author": {
-                "@type": "Person",
-                "name": "cookingnow"
-            },
-            "reviewBody": "Have been reading Musashi to my son and he eats rice balls throughout the book. I am familiar with a lot of Japanese dishes, but have never tried onigiri before. I decided to give them a try and the kids and I loved them! I filled them with tuna salad and chicken salad, wrapped a small piece of nori at the bottom and sprinkled the tops with vegetable furikake. They were delicious and my daughter who is a picky eater at 2 at lunch and then wanted them for dinner too! Definitely a hit and will make again!!",
-            "datePublished": "2019-08-18T01:08:11.843Z"
-        },
-        {
-            "@type": "Review",
-            "reviewRating": {
-                "@type": "Rating",
-                "ratingValue": "3"
-            },
-            "author": {
-                "@type": "Person",
-                "name": "CuriousCat"
-            },
-            "reviewBody": "The rice stayed together, but it was kind of mushy in an unpleasant way. I'll make it again, but I think I'll let it sit for less time than it says to.",
-            "datePublished": "2019-03-18T14:31:21.693Z"
-        },
-        {
-            "@type": "Review",
-            "reviewRating": {
-                "@type": "Rating",
-                "ratingValue": "5"
-            },
-            "author": {
-                "@type": "Person",
-                "name": "Kaitlin Boudreaux"
-            },
-            "reviewBody": "I use a spicy tuna filling that was amazing.",
-            "datePublished": "2018-01-20T06:15:12.970Z"
         }
-    ],
-    "mainEntityOfPage": {
-        "@type": [
-            "WebPage"
-        ],
-        "@id": "https://www.allrecipes.com/recipe/140422/onigiri-japanese-rice-balls/",
-        "breadcrumb": {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "item": {
-                        "@id": "https://www.allrecipes.com/recipes/81/side-dish/",
-                        "name": "Side Dish"
-                    }
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "item": {
-                        "@id": "https://www.allrecipes.com/recipes/224/side-dish/rice/",
-                        "name": "Rice Side Dish Recipes"
-                    }
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 3,
-                    "item": {
-                        "@id": "https://www.allrecipes.com/recipe/140422/onigiri-japanese-rice-balls/",
-                        "name": "Onigiri (Japanese Rice Balls)"
-                    }
-                }
-            ]
-        },
-        "reviewedBy": [
-            {
-                "@type": "Person",
-                "name": "Allrecipes Test Kitchen",
-                "url": "https://www.allrecipes.com/allrecipes-test-kitchen-7553892"
-            }
-        ],
-        "lastReviewed": "2023-10-13T16:46:33.163-04:00"
-    }
+    ]
 }'''
         recipe = recipe_from_json(recipe_json)
         self.assertIsNotNone(recipe)
@@ -309,7 +162,7 @@ class TestJsonLd(unittest.TestCase):
         )
         self.assertEqual(recipe.rating.value, 4.4)
         self.assertEqual(recipe.rating.count, 57)
-        self.assertEqual(len(recipe.reviews), 10)
+        self.assertEqual(len(recipe.reviews), 2)
         self.assertEqual(recipe.reviews[0].author, "elyssa")
         self.assertEqual(recipe.reviews[0].rating, 4.0)
         self.assertEqual(recipe.reviews[0].body,

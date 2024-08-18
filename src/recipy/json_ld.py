@@ -1,13 +1,12 @@
 import html
 import json
 from typing import Optional, List, Dict, Union
-import re
 
 import httpx
 from bs4 import BeautifulSoup
 
-from .models import Recipe, IngredientGroup, Rating, Meta, InstructionGroup, Review
 from . import utils
+from .models import Recipe, IngredientGroup, Rating, Meta, InstructionGroup, Review
 
 
 def recipe_from_url(url: str) -> Optional[Union[Recipe, str]]:
@@ -203,11 +202,7 @@ def _get_url(recipe: dict) -> Optional[str]:
 def _get_description(recipe: dict) -> Optional[str]:
     val = recipe.get("description")
     if val:
-        val = html.unescape(val)
-        val = utils.normalize_fractions(val)
-        val = utils.normalize_temperatures(val)
-        val = utils.collapse_whitespace(val)
-        val = val.strip()
+        val = utils.clean_text(val)
     return val
 
 

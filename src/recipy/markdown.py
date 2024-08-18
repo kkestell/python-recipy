@@ -6,7 +6,7 @@ from markdown import Extension
 from markdown.treeprocessors import Treeprocessor
 
 from . import utils
-from .models import Recipe, IngredientGroup, InstructionGroup, Review, Meta, Rating
+from .models import Recipe, IngredientGroup, InstructionGroup
 
 
 def recipe_from_markdown(content: str) -> Optional[Recipe]:
@@ -95,7 +95,6 @@ class RecipeParser(Treeprocessor):
         if ingredient_groups is None:
             return None
 
-        # Find the Instructions heading
         while current_index < len(root) and (root[current_index].tag != 'h2' or root[current_index].text != 'Instructions'):
             current_index += 1
 
@@ -113,7 +112,6 @@ class RecipeParser(Treeprocessor):
             notes = root[current_index + 1].text
             current_index += 2
 
-        # Initialize new fields with default values
         reviews = []
         image_url = None
         rating = None

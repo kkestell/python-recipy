@@ -1,6 +1,7 @@
 from typing import Optional, List
 from pydantic import BaseModel, Field
 
+
 class IngredientGroup(BaseModel):
     """
     Represents a group of ingredients in a recipe.

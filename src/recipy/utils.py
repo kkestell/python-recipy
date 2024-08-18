@@ -17,13 +17,12 @@ def clean_text(text: str) -> str:
     Returns:
         str: The cleaned text.
     """
-    if not text:
-        return text
-    text = html.unescape(text)
-    text = normalize_fractions(text)
-    text = normalize_temperatures(text)
-    text = collapse_whitespace(text)
-    text = text.strip()
+    if text:
+        text = html.unescape(text)
+        text = normalize_fractions(text)
+        text = normalize_temperatures(text)
+        text = collapse_whitespace(text)
+        text = text.strip()
     return text
 
 
@@ -170,8 +169,8 @@ def _decimal_to_fraction(val):
     # Split the input into tokens based on spaces or non-numeric characters
     tokens = re.split(r'(\s+|[^0-9.])', val)
 
-    # Process only valid decimal numbers
-    tokens = [re.sub(r'^\d+(\.\d+)?$', replace_decimal, token) for token in tokens]
+    # Process only valid decimal numbers that have a fractional part (i.e., a digit after the decimal point)
+    tokens = [re.sub(r'^\d+\.\d+$', replace_decimal, token) for token in tokens]
 
     return ''.join(tokens)
 

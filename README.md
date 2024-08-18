@@ -131,7 +131,7 @@ if recipe:
 * Instructions must be under an H2 heading `## Instructions`, with optional H3 subheadings for instruction groups.
 * Notes can be included under an H2 heading `## Notes`.
 
-### Convert Recipe to JSON
+### Convert Recipe to JSON-LD
 
 ```python
 from recipy.json_ld import recipe_from_url, recipe_to_json

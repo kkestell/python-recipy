@@ -43,28 +43,43 @@ from recipy.json_ld import recipe_from_json
 
 json_data = '''
 {
-    "name": "Tomato Basil Salad",
-    "description": "A simple and fresh tomato basil salad.",
-    "recipeIngredient": ["2 ripe tomatoes, sliced", "1/4 cup fresh basil leaves, torn"],
-    "recipeInstructions": [
+  "name": "Tomato Basil Salad",
+  "description": "A simple and fresh tomato basil salad.",
+  "recipeIngredient": [
+    "2 ripe tomatoes, sliced",
+    "1/4 cup fresh basil leaves, torn"
+  ],
+  "recipeInstructions": [
+    {
+      "@type": "HowToSection",
+      "name": "Making the Salad",
+      "itemListElement": [
         {
-            "@type": "HowToSection",
-            "name": "Making the Salad",
-            "itemListElement": [
-                {"@type": "HowToStep", "text": "Arrange the tomato slices on a plate."},
-                {"@type": "HowToStep", "text": "Scatter the torn basil leaves over the tomatoes."}
-            ]
+          "@type": "HowToStep",
+          "text": "Arrange the tomato slices on a plate."
         },
         {
-            "@type": "HowToSection",
-            "name": "Preparing the Dressing",
-            "itemListElement": [
-                {"@type": "HowToStep", "text": "In a small bowl, whisk together the olive oil and balsamic vinegar."},
-                {"@type": "HowToStep", "text": "Drizzle the dressing over the tomatoes and basil before serving."}
-            ]
+          "@type": "HowToStep",
+          "text": "Scatter the torn basil leaves over the tomatoes."
         }
-    ],
-    "comment": "Serve immediately for the best flavor."
+      ]
+    },
+    {
+      "@type": "HowToSection",
+      "name": "Preparing the Dressing",
+      "itemListElement": [
+        {
+          "@type": "HowToStep",
+          "text": "In a small bowl, whisk together the olive oil and balsamic vinegar."
+        },
+        {
+          "@type": "HowToStep",
+          "text": "Drizzle the dressing over the tomatoes and basil before serving."
+        }
+      ]
+    }
+  ],
+  "comment": "Serve immediately for the best flavor."
 }
 '''
 
@@ -147,12 +162,13 @@ if recipe:
 
 ```python
 from recipy.json_ld import recipe_from_url
-from recipy.pdf import recipe_to_pdf
+from recipy.pdf import recipe_to_pdf, PdfOptions
 
 recipe = recipe_from_url("https://www.allrecipes.com/recipe/14231/guacamole/")
 
 if recipe:
-    pdf_content = recipe_to_pdf(recipe)
+    pdf_options = PdfOptions(reproducible=True)
+    pdf_content = recipe_to_pdf(recipe, pdf_options=pdf_options)
     with open("recipe.pdf", "wb") as f:
         f.write(pdf_content)
 ```
@@ -161,12 +177,13 @@ if recipe:
 
 ```python
 from recipy.json_ld import recipe_from_url
-from recipy.latex import recipe_to_latex
+from recipy.latex import recipe_to_latex, LatexOptions
 
 recipe = recipe_from_url("https://www.allrecipes.com/recipe/14231/guacamole/")
 
 if recipe:
-    latex_content = recipe_to_latex(recipe)
+    latex_options = LatexOptions(main_font="Liberation Serif", heading_font="Liberation Sans")
+    latex_content = recipe_to_latex(recipe, options=latex_options)
     print(latex_content)
 ```
 
@@ -312,8 +329,8 @@ print(recipe.model_dump_json(indent=2))
             <td>Images</td>
             <td>✅</td> <!-- json input -->
             <td>✅</td> <!-- json output -->
-            <td>❌</td> <!-- markdown input -->
-            <td>❌</td> <!-- markdown output -->
+            <td>✅</td> <!-- markdown input -->
+            <td>✅</td> <!-- markdown output -->
             <td>❌</td> <!-- latex output -->
         </tr>
         <tr>

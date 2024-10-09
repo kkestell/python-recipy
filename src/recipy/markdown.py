@@ -42,12 +42,15 @@ def recipe_to_markdown(recipe: Recipe) -> str:
         recipe (Recipe): The `Recipe` object to be converted.
 
     Returns:
-        str: A Markdown formatted string representing the recipe, including the title, description, ingredients, and instructions.
+        str: A Markdown formatted string representing the recipe, including the title, description, image, ingredients, and instructions.
     """
     md = f"# {recipe.title}\n\n"
 
     if recipe.description:
         md += f"{recipe.description}\n\n"
+
+    if recipe.image_urls:
+        md += f"![{recipe.title}]({recipe.image_urls[0]})\n\n"
 
     md += "## Ingredients\n\n"
     for ingredient_group in recipe.ingredient_groups:
@@ -65,6 +68,9 @@ def recipe_to_markdown(recipe: Recipe) -> str:
             md += f"{i}. {instruction}\n"
         md += "\n"
 
+    if recipe.notes:
+        md += f"## Notes\n\n{recipe.notes}\n\n"
+
     return md.strip() + "\n"
 
 
@@ -73,7 +79,7 @@ class RecipeParser(Treeprocessor):
         self.recipe = self.parse_recipe(root)
         if self.recipe is None:
             raise ValueError("Markdown structure does not conform to expected format")
-        return root  # We still need to return the root for other processors
+        return root
 
     def parse_recipe(self, root: Element) -> Optional[Recipe]:
         if len(root) == 0 or root[0].tag != 'h1':
@@ -82,10 +88,24 @@ class RecipeParser(Treeprocessor):
         title = root[0].text
         current_index = 1
         description = None
+        image_urls = []
 
+        # Check for description (p tag after h1)
         if len(root) > current_index and root[current_index].tag == 'p':
-            description = root[current_index].text
-            current_index += 1
+            img = root[current_index].find('img')
+            if img is None:
+                description = root[current_index].text
+                current_index += 1
+            else:
+                image_urls.append(img.get('src'))
+                current_index += 1
+
+        # Check for image if not found with description
+        if not image_urls and len(root) > current_index and root[current_index].tag == 'p':
+            img = root[current_index].find('img')
+            if img is not None:
+                image_urls.append(img.get('src'))
+                current_index += 1
 
         if len(root) <= current_index or root[current_index].tag != 'h2' or root[current_index].text != 'Ingredients':
             return None
@@ -113,7 +133,6 @@ class RecipeParser(Treeprocessor):
             current_index += 2
 
         reviews = []
-        image_url = None
         rating = None
         meta = None
 
@@ -124,7 +143,7 @@ class RecipeParser(Treeprocessor):
             instruction_groups=instruction_groups,
             notes=notes,
             reviews=reviews,
-            image_url=image_url,
+            image_urls=image_urls,
             rating=rating,
             meta=meta
         )
